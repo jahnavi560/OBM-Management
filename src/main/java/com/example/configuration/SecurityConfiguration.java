@@ -48,7 +48,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/registration").permitAll()
+				.antMatchers("/delete-user/**").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
+			//	.antMatchers("/employee/**").hasAuthority("EMPLOYEE").anyRequest()
 				.authenticated().and().csrf().disable().formLogin()
 				.loginPage("/login").failureUrl("/login?error=true")
 				.defaultSuccessUrl("/admin/home")
@@ -58,6 +60,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and().exceptionHandling()
 				.accessDeniedPage("/access-denied");
+
 	}
 	
 	@Override
