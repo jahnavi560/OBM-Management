@@ -26,8 +26,9 @@ public class FileServiceImpl implements FileService {
 	}
 	@Override
 	public FileModel getFile(String name) {
+		//fileRepository.findbyFileName(name);
 		return null;
-				//fileRepository.findbyFileName(name);
+				
 				
 				
 	}
