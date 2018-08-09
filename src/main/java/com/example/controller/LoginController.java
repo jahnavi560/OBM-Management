@@ -79,7 +79,8 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		List<User> lstuser = userService.findAll();
 		modelAndView.addObject("users",lstuser);
-		modelAndView.addObject("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("welcomeMsg", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("userName", user.getName() + " " + user.getLastName() );
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
 		modelAndView.setViewName("admin/home");
 		return modelAndView;
@@ -91,7 +92,7 @@ public class LoginController {
 		modelAndView.setViewName("admin/home");
 		return "redirect:/admin/home";
 	}
-	@PostMapping("/uploadfile") // //new annotation since 4.3
+/*	@PostMapping("/uploadfile") // //new annotation since 4.3
     public String singleFileUpload(@RequestParam("file") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
@@ -120,6 +121,6 @@ public class LoginController {
     @GetMapping("/uploadstatus")
     public String uploadStatus() {
         return "uploadstatus";
-    }
+    }*/
 
 }

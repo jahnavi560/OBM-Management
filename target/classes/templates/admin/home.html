@@ -24,7 +24,7 @@
 		<div class="panel-group" style="margin-top: 40px">
 			<div class="panel panel-primary">
 				<div class="panel-heading">
-					<span th:utext="${userName}"></span>
+					<span th:utext="${welcomeMsg}"></span>
 				</div>
 				<div class="panel-body">
 					Get All User List
@@ -54,10 +54,11 @@
 				</table>
 			</div>
 		</div>
-		<form method="POST" action="/uploadfile" enctype="multipart/form-data">
+		<form method="POST" action="/uploadfile" enctype="multipart/form-data" >
 			<input type="file" name="file" /><br />
-			<br /> <input type="submit" value="Submit" />
+			<br /> <input type="submit" value="Submit"  />
 		</form>
+		<a href="/file-list">File List</a>
 
 	</div>
 </body>

@@ -26,6 +26,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
 	
+	/*@Value("${spring.queries.file-query}")
+	private String fileQuery;
+	*/
 	@Value("${spring.queries.roles-query}")
 	private String rolesQuery;
 
@@ -48,7 +51,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/").permitAll()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/registration").permitAll()
-				.antMatchers("/delete-user/**").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
 			//	.antMatchers("/employee/**").hasAuthority("EMPLOYEE").anyRequest()
 				.authenticated().and().csrf().disable().formLogin()
