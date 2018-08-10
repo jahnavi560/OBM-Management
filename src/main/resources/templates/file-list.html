@@ -28,7 +28,9 @@
 			<tr th:each="file : ${files}">
 				<td th:text="${file.owner}">&nbsp;</td>
 				<td th:text="${file.name}">&nbsp;</td>
-				<td><a class="btn mini red-stripe" href="/download/${file.path}">Download</a></td>
+				
+				<td><a class="btn mini red-stripe" th:href="@{'/download/' + ${file.name}}">Download</a></td>
+				<td th:text="${file.id}">&nbsp;</td>
 			</tr>
 		</tbody>
 	</table> 
