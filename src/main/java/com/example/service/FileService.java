@@ -8,4 +8,5 @@ public interface FileService {
 	public void saveFile(FileModel file);
 	public List<FileModel> getAllFile() ;
 	public FileModel getFile(String name);
+	public List<FileModel> getFilesByOwner(String email);
 }

@@ -15,6 +15,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -36,27 +38,27 @@ import com.example.service.FileService;
 
 @Controller
 public class FileController {
-
+	private static final Logger logger = LogManager.getLogger(FileController.class);
 	@Autowired
 	ServletContext context;
 	@Autowired
 	private FileService fileService;
 
-
 	@Value("${spring.upload.filepath}")
 	private String UPLOADED_FOLDER;
 
-	@PostMapping("/uploadfile") 
+	@PostMapping("/uploadfile")
 	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 		if (file.isEmpty()) {
 			redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
 			return "redirect:uploadstatus";
 		}
 		try {
-			  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		      String userName = auth.getName();
+			logger.debug("Debug log");
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			String userName = auth.getName();
 			byte[] bytes = file.getBytes();
-			Path path = Paths.get(UPLOADED_FOLDER+""+ file.getOriginalFilename());
+			Path path = Paths.get(UPLOADED_FOLDER + "" + file.getOriginalFilename());
 			System.out.println(path);
 			Files.write(path, bytes);
 			FileModel fileModel = new FileModel();
@@ -65,7 +67,8 @@ public class FileController {
 			fileModel.setOwner(userName);
 			fileService.saveFile(fileModel);
 			redirectAttributes.addFlashAttribute("fileName", path.toString());
-			redirectAttributes.addFlashAttribute("message","You successfully uploaded '" + file.getOriginalFilename() + "'");
+			redirectAttributes.addFlashAttribute("message",
+					"You successfully uploaded '" + file.getOriginalFilename() + "'");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -78,10 +81,11 @@ public class FileController {
 		return "upload-status";
 	}
 
-	@RequestMapping(value="/download/{file:.+}" ,  method = RequestMethod.GET)
-	public void download(@PathVariable("file") String filename,HttpServletRequest request, HttpServletResponse response) throws IOException {
+	@RequestMapping(value = "/download/{file:.+}", method = RequestMethod.GET)
+	public void download(@PathVariable("file") String filename, HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
 
-		File file = new File(UPLOADED_FOLDER+""+filename);
+		File file = new File(UPLOADED_FOLDER + "" + filename);
 		if (file.exists()) {
 			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
 			if (mimeType == null) {
@@ -97,10 +101,21 @@ public class FileController {
 		}
 	}
 
-	@GetMapping("/file-list")
-	public ModelAndView fileList() {
-		List<FileModel> files = fileService.getAllFile();
-
+	@RequestMapping("/file-list/{owner}")
+	public ModelAndView fileList(@PathVariable("owner") String owner) {
+		/* List<FileModel> files = fileService.getAllFile(); */
+		System.out.println(owner);
+		List<FileModel> files = fileService.getFilesByOwner(owner);
+		System.out.println(files);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("file-list");
+		mv.addObject("files", files);
+		return mv;
+	}
+	@RequestMapping("/file-list")
+	public ModelAndView getAllfileList() {
+		List<FileModel> files = fileService.getAllFile(); 
+		System.out.println(files);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("file-list");
 		mv.addObject("files", files);

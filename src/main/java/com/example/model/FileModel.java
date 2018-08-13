@@ -4,11 +4,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import com.fasterxml.jackson.annotation.JsonView;
 
 @Entity
 @Table(name="file")
+/*@NamedQueries({
+    @NamedQuery(
+        name = "findFilesByEmail",
+        query = "from FileModel u where u.owner = :email"
+        )})*/
 public class FileModel {
 
 		@Id

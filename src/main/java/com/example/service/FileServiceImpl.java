@@ -1,10 +1,8 @@
 package com.example.service;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.example.model.FileModel;
 import com.example.repository.FileRepository;
 
@@ -31,6 +29,13 @@ public class FileServiceImpl implements FileService {
 				
 				
 				
+	}
+	@Override
+	public List<FileModel> getFilesByOwner(String email) {
+		// TODO Auto-generated method stub
+		System.out.println(email+"---------");
+		List<FileModel> lst =fileRepository.findByOwner(email);
+		return fileRepository.findByOwner(email);
 	}
 
 }

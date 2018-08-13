@@ -31,7 +31,12 @@ public class LoginController {
 		modelAndView.setViewName("login");
 		return modelAndView;
 	}
-	
+	@RequestMapping(value="/employee-login", method = RequestMethod.GET)
+	public ModelAndView employeeLogin(){
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("employee-login");
+		return modelAndView;
+	}
 	
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
 	public ModelAndView registration(){
@@ -74,6 +79,19 @@ public class LoginController {
 		modelAndView.addObject("userName", user.getName() + " " + user.getLastName() );
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
 		modelAndView.setViewName("admin/home");
+		return modelAndView;
+	}
+	@RequestMapping(value="/admin-login", method = RequestMethod.GET)
+	public ModelAndView jhome(){
+		ModelAndView modelAndView = new ModelAndView();
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+		List<User> lstuser = userService.findAll();
+		modelAndView.addObject("users",lstuser);
+		modelAndView.addObject("welcomeMsg", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("userName", user.getName() + " " + user.getLastName() );
+		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
+		modelAndView.setViewName("admin-login");
 		return modelAndView;
 	}
 	@RequestMapping(value="/delete-user")
