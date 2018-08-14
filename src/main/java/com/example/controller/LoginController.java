@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -19,7 +21,7 @@ import com.example.service.UserService;
 
 @Controller
 public class LoginController {
-	
+	private static final Logger logger = LogManager.getLogger(LoginController.class);
 	@Autowired
 	private UserService userService;
 
@@ -27,6 +29,7 @@ public class LoginController {
 	private  String UPLOADED_FOLDER ;
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(){
+		logger.debug("login log");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
 		return modelAndView;
@@ -83,12 +86,13 @@ public class LoginController {
 	}
 	@RequestMapping(value="/admin-login", method = RequestMethod.GET)
 	public ModelAndView jhome(){
+		logger.info("info");
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
 		List<User> lstuser = userService.findAll();
 		modelAndView.addObject("users",lstuser);
-		modelAndView.addObject("welcomeMsg", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		modelAndView.addObject("welcomeMsg", "Welcome " + user.getName() + " " + user.getLastName());
 		modelAndView.addObject("userName", user.getName() + " " + user.getLastName() );
 		modelAndView.addObject("adminMessage","Content Available Only for Users with Admin Role");
 		modelAndView.setViewName("admin-login");

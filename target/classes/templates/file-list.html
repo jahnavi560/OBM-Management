@@ -10,31 +10,31 @@
 </head>
 <body>
 
-<div class="panel-group" style="margin-top: 40px">
-<div class="panel panel-primary">
-				<div class="panel-heading">
-					<span th:utext="List"></span>
-				</div>
- <table class="table table-bordered">
-		<thead class="thead-light">
-			<tr>
-				<th>Owner</th>
-				<th>File Name</th>
-				<th>Download</th>
-
-			</tr>
-		</thead>
-		<tbody>
-			<tr th:each="file : ${files}">
-				<td th:text="${file.owner}">&nbsp;</td>
-				<td th:text="${file.name}">&nbsp;</td>
-				
-				<td><a class="btn mini red-stripe" th:href="@{'/download/' + ${file.name}}">Download</a></td>
-				<td th:text="${file.id}">&nbsp;</td>
-			</tr>
-		</tbody>
-	</table> 
+	<div align="center">
+		<h3 class="btn-warning">OBM Management</h3>
 	</div>
+	<div class="container">
+		<div class="panel-group" style="margin-top: 40px">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<span th:utext="${filelistmsg}"></span>
+				</div>
+				<table class="table table-bordered">
+					<thead class="thead-light">
+						<tr>
+							<th>File Name</th>
+							<th>Download</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="file : ${files}">
+							<td th:text="${file.name}">&nbsp;</td>
+							<td><a class="btn mini red-stripe" th:href="@{'/download/' + ${file.name}}">Download</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
 	</div>
 </body>
 </html>

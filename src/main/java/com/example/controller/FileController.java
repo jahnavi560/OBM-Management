@@ -67,8 +67,7 @@ public class FileController {
 			fileModel.setOwner(userName);
 			fileService.saveFile(fileModel);
 			redirectAttributes.addFlashAttribute("fileName", path.toString());
-			redirectAttributes.addFlashAttribute("message",
-					"You successfully uploaded '" + file.getOriginalFilename() + "'");
+			redirectAttributes.addFlashAttribute("message","You successfully uploaded '" + file.getOriginalFilename() + "'");
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -101,15 +100,14 @@ public class FileController {
 		}
 	}
 
-	@RequestMapping("/file-list/{owner}")
-	public ModelAndView fileList(@PathVariable("owner") String owner) {
-		/* List<FileModel> files = fileService.getAllFile(); */
-		System.out.println(owner);
+	@RequestMapping("/file-list/{email:.+}/{user}")
+	public ModelAndView fileList(@PathVariable("email") String owner, @PathVariable("user") String user) {
 		List<FileModel> files = fileService.getFilesByOwner(owner);
 		System.out.println(files);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("file-list");
 		mv.addObject("files", files);
+		mv.addObject("filelistmsg", "File list by " +user);
 		return mv;
 	}
 	@RequestMapping("/file-list")

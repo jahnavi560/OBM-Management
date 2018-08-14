@@ -7,12 +7,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.model.FileModel;
+import java.lang.String;
 
 @Repository("fileReposiory")
 public interface FileRepository extends JpaRepository<FileModel, Integer>{
 //	 @Query("SELECT t FROM FileModel t WHERE t.owner = ?1")
-	List<FileModel> findByOwner(String owner);
+//	List<FileModel> findByOwner(String owner);
 	
+	List<FileModel> findByOwner(String owner);
 
 
 }
