@@ -5,6 +5,7 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -44,6 +45,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	}
 
 	@Override
+	@Order(1)
 	protected void configure(HttpSecurity http) throws Exception {
 		
 		http.
@@ -52,18 +54,37 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/login").permitAll()
 				.antMatchers("/registration").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN").anyRequest()
-			//	.antMatchers("/employee/**").hasAuthority("EMPLOYEE").anyRequest()
 				.authenticated().and().csrf().disable().formLogin()
-				.loginPage("/login").failureUrl("/login?error=true")
-				.defaultSuccessUrl("/admin-login")
+				.loginPage("/login")
+				.failureUrl("/login?error=true")
+				.successForwardUrl("/admin-login")
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.and().logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 				.logoutSuccessUrl("/").and().exceptionHandling()
 				.accessDeniedPage("/access-denied");
-
+		
+		/*http.
+		authorizeRequests()
+			.antMatchers("/").permitAll()
+			.antMatchers("/login").permitAll()
+			.antMatchers("/registration").permitAll()
+			.antMatchers("/employee/**").hasRole("EMPLOYEE").anyRequest()
+		//	.antMatchers("/employee/**").hasAuthority("EMPLOYEE").anyRequest()
+			.authenticated().and().csrf().disable().formLogin()
+			.loginPage("/login")
+			.failureUrl("/login?error=true")
+			.successForwardUrl("/employee-login")
+			.usernameParameter("email")
+			.passwordParameter("password")
+			.and().logout()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+			.logoutSuccessUrl("/").and().exceptionHandling()
+			.accessDeniedPage("/access-denied");*/
+	
 	}
+	
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {

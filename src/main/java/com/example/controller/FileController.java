@@ -9,12 +9,11 @@ import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,6 +40,7 @@ public class FileController {
 	private static final Logger logger = LogManager.getLogger(FileController.class);
 	@Autowired
 	ServletContext context;
+	
 	@Autowired
 	private FileService fileService;
 
@@ -57,6 +57,16 @@ public class FileController {
 			logger.debug("Debug log");
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String userName = auth.getName();
+			String filename = file.getOriginalFilename();
+			List<FileModel> lstfile = fileService.getFilebyOwnerName(userName, filename);
+			System.out.println("lst-----------"+lstfile);
+			
+			if(!lstfile.isEmpty()) {
+				
+			}else {
+				
+			}
+			
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(UPLOADED_FOLDER + "" + file.getOriginalFilename());
 			System.out.println(path);
@@ -65,6 +75,9 @@ public class FileController {
 			fileModel.setName(file.getOriginalFilename());
 			fileModel.setPath(path.toString());
 			fileModel.setOwner(userName);
+			java.util.Date d = new Date();
+			java.sql.Timestamp sqlDate=new java.sql.Timestamp(d.getTime());
+			fileModel.setLastmodified_date(sqlDate);
 			fileService.saveFile(fileModel);
 			redirectAttributes.addFlashAttribute("fileName", path.toString());
 			redirectAttributes.addFlashAttribute("message","You successfully uploaded '" + file.getOriginalFilename() + "'");
@@ -83,7 +96,6 @@ public class FileController {
 	@RequestMapping(value = "/download/{file:.+}", method = RequestMethod.GET)
 	public void download(@PathVariable("file") String filename, HttpServletRequest request,
 			HttpServletResponse response) throws IOException {
-
 		File file = new File(UPLOADED_FOLDER + "" + filename);
 		if (file.exists()) {
 			String mimeType = URLConnection.guessContentTypeFromName(file.getName());
@@ -119,5 +131,4 @@ public class FileController {
 		mv.addObject("files", files);
 		return mv;
 	}
-
 }

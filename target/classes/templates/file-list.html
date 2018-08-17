@@ -23,12 +23,14 @@
 					<thead class="thead-light">
 						<tr>
 							<th>File Name</th>
+							<th>Last Modified Date</th>
 							<th>Download</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="file : ${files}">
 							<td th:text="${file.name}">&nbsp;</td>
+							<td th:text="${file.lastmodified_date}">&nbsp;</td>
 							<td><a class="btn mini red-stripe" th:href="@{'/download/' + ${file.name}}">Download</a></td>
 						</tr>
 					</tbody>

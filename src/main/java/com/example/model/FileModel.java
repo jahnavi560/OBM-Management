@@ -1,20 +1,16 @@
 package com.example.model;
-
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="file")
-/*@NamedQueries({
-    @NamedQuery(
-        name = "findFilesByEmail",
-        query = "from FileModel u where u.owner = :email"
-        )})*/
+@NamedQuery(name = "FileModel.getFilebyOwnerName",query ="select f from FileModel f where f.name=:name and f.owner=:owner"
+)
 public class FileModel {
 
 		@Id
@@ -30,6 +26,17 @@ public class FileModel {
 	    
 	    @Column(name = "file_path")
 		private String path;
+	    
+	    @Column(name = "lastmodified_date")
+	    private Timestamp lastmodified_date;
+
+		public Timestamp getLastmodified_date() {
+			return lastmodified_date;
+		}
+
+		public void setLastmodified_date(Timestamp sqlDate) {
+			this.lastmodified_date = sqlDate;
+		}
 
 		public Long getId() {
 			return id;
@@ -73,7 +80,5 @@ public class FileModel {
 			this.owner = owner;
 			this.path = path;
 		}
-		
-		
 
 }
