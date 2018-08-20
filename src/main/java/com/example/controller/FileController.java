@@ -31,7 +31,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import com.example.model.FileModel;
 import com.example.service.FileService;
 
@@ -40,57 +39,52 @@ public class FileController {
 	private static final Logger logger = LogManager.getLogger(FileController.class);
 	@Autowired
 	ServletContext context;
-	
+
 	@Autowired
 	private FileService fileService;
 
 	@Value("${spring.upload.filepath}")
 	private String UPLOADED_FOLDER;
 
-	@PostMapping("/uploadfile")
+	@PostMapping("/file-upload")
 	public String singleFileUpload(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
-		if (file.isEmpty()) {
-			redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-			return "redirect:uploadstatus";
-		}
+
 		try {
 			logger.debug("Debug log");
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String userName = auth.getName();
 			String filename = file.getOriginalFilename();
-			List<FileModel> lstfile = fileService.getFilebyOwnerName(userName, filename);
-			System.out.println("lst-----------"+lstfile);
-			
-			if(!lstfile.isEmpty()) {
-				
-			}else {
-				
-			}
-			
+			// List<FileModel> lstfile = fileService.getFilebyOwnerName(userName, filename);
+
 			byte[] bytes = file.getBytes();
 			Path path = Paths.get(UPLOADED_FOLDER + "" + file.getOriginalFilename());
-			System.out.println(path);
+			System.out.println("----------" + path);
 			Files.write(path, bytes);
 			FileModel fileModel = new FileModel();
 			fileModel.setName(file.getOriginalFilename());
 			fileModel.setPath(path.toString());
 			fileModel.setOwner(userName);
 			java.util.Date d = new Date();
-			java.sql.Timestamp sqlDate=new java.sql.Timestamp(d.getTime());
+			java.sql.Timestamp sqlDate = new java.sql.Timestamp(d.getTime());
 			fileModel.setLastmodified_date(sqlDate);
 			fileService.saveFile(fileModel);
-			redirectAttributes.addFlashAttribute("fileName", path.toString());
-			redirectAttributes.addFlashAttribute("message","You successfully uploaded '" + file.getOriginalFilename() + "'");
-
+			// redirectAttributes.addFlashAttribute("fileName", path.toString());
+			// redirectAttributes.addFlashAttribute("message","You successfully uploaded '"
+			// + file.getOriginalFilename() + "'");
+			List<FileModel> files = fileService.getFilesByOwner(userName);
+			redirectAttributes.addFlashAttribute("files", files);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return "redirect:/upload-status";
 	}
 
-	@GetMapping("/upload-status")
-	public String uploadStatus() {
-		return "upload-status";
+	@RequestMapping("/upload-status")
+	public ModelAndView uploadStatus() {
+
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("upload-status");
+		return mv;
 	}
 
 	@RequestMapping(value = "/download/{file:.+}", method = RequestMethod.GET)
@@ -105,10 +99,8 @@ public class FileController {
 			response.setContentType(mimeType);
 			response.setHeader("Content-Disposition", String.format("inline; filename=\"" + file.getName() + "\""));
 			response.setContentLength((int) file.length());
-
 			InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
 			FileCopyUtils.copy(inputStream, response.getOutputStream());
-
 		}
 	}
 
@@ -119,16 +111,23 @@ public class FileController {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("file-list");
 		mv.addObject("files", files);
-		mv.addObject("filelistmsg", "File list by " +user);
+		mv.addObject("filelistmsg", "File list by " + user);
 		return mv;
 	}
+
 	@RequestMapping("/file-list")
 	public ModelAndView getAllfileList() {
-		List<FileModel> files = fileService.getAllFile(); 
+		List<FileModel> files = fileService.getAllFile();
 		System.out.println(files);
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("file-list");
 		mv.addObject("files", files);
 		return mv;
 	}
+	@RequestMapping("/delete-file/{id}")
+	public String deleteFile(@PathVariable("id") Integer id) {
+		fileService.deleteFile(id);
+		return  "redirect:/employee-login";
+	}
+	
 }

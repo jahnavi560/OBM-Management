@@ -39,4 +39,8 @@ public class FileServiceImpl implements FileService {
 	public List<FileModel> getFilebyOwnerName( String owner,String name){
 		return fileRepository.getFilebyOwnerName(owner, name);
 	}
+	@Override
+	public void deleteFile(Integer id) {
+		fileRepository.delete(id);
+	}
 }

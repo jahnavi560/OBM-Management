@@ -1,13 +1,11 @@
 package com.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.example.model.FileModel;
 import com.example.model.User;
 import com.example.service.FileService;
@@ -26,16 +23,30 @@ public class LoginController {
 	private static final Logger logger = LogManager.getLogger(LoginController.class);
 	@Autowired
 	private UserService userService;
+	
+
+	@Autowired
+	private FileService fileService;
+
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login(){
-		logger.debug("login log");
+		logger.info("login log");
+		System.out.println("login");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
 		return modelAndView;
 	}
 	
-	
+	/*@RequestMapping(value="/validate", method = RequestMethod.GET)
+	public ModelAndView validate(@Valid User user){
+		System.out.println("validate");
+		System.out.println("============"+user.getEmail()+"==="+user.getPassword());
+		logger.debug("login log");
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("admin-home");
+		return modelAndView;
+	}*/
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
 	public ModelAndView registration(){
 		ModelAndView modelAndView = new ModelAndView();
@@ -65,7 +76,7 @@ public class LoginController {
 		return modelAndView;
 	}
 	
-	@RequestMapping(value="/admin/home", method = RequestMethod.GET)
+	@RequestMapping(value="/admin/home")
 	public ModelAndView home(){
 		ModelAndView modelAndView = new ModelAndView();
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -92,11 +103,41 @@ public class LoginController {
 		modelAndView.setViewName("admin-login");
 		return modelAndView;
 	}
+	
+	@RequestMapping(value="/admin-home")
+	public ModelAndView adminhome(){
+		logger.info("admin-home");
+		List<FileModel> files = fileService.getAllFile(); 
+		List<User> lstuser = userService.getFilePendingUser();
+		List<String> list = new ArrayList<String>();
+		String[] tolist = new String[100];
+		for(User user : lstuser) {
+			list.add(user.getEmail());
+		}
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("admin-home");
+		mv.addObject("files", files);
+		mv.addObject("pendingUser", lstuser);
+		mv.addObject("eParams", list);
+		System.out.println("list user"+list);
+		return mv;
+	}
 	@RequestMapping(value="/employee-login")
-	public ModelAndView employeeLogin(){
+	public ModelAndView fileUpload(){
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		String userName = auth.getName();
+		List<FileModel> files = fileService.getFilesByOwner(userName);
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName("employee-login");
-		return modelAndView;
+		if(files == null || files.isEmpty()){
+			modelAndView.setViewName("file-upload");
+			return modelAndView;
+		}else{
+			System.out.println(userName);
+			System.out.println(files);
+			modelAndView.addObject("files", files);
+			modelAndView.setViewName("upload-status");
+			return modelAndView;
+		}
 	}
 	@RequestMapping(value="/delete-user")
 	public String deleteUser(@Valid User user, BindingResult bindingResult) {

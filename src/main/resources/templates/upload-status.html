@@ -1,12 +1,51 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>upload status</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/home.css}" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
 <body>
 
-<h1>Spring Boot - Upload Status</h1>
+	<div align="center">
+		<h3 class="btn-warning">OBM Management</h3>
+	</div>
 
-<div th:if="${message}">
-    <h2 th:text="${message}"/>
+	<div align="right"><a class="btn mini red-stripe" th:href="@{/logout}" >Logout</a>
 </div>
-
+<div class="container">
+<h3>You have successfully uploaded file for this week </h3>
+		<div class="panel-group" style="margin-top: 40px">
+			<div class="panel panel-primary">
+				
+				<table class="table table-bordered">
+					<thead class="thead-light">
+						<tr>
+							<th>File Name</th>
+							<th>Last Modified Date</th>
+							<th>Download</th>
+							<th>Delete</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="file : ${files}">
+							<td th:text="${file.name}">&nbsp;</td>
+							<td th:text="${file.lastmodified_date}">&nbsp;</td>
+							<td><a class="btn mini red-stripe" th:href="@{'/download/' + ${file.name}}">Download</a></td>
+							<td><a class="btn mini red-stripe" th:href="@{'/delete-file/' + ${file.id}}">Delete</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Email;
@@ -20,6 +21,8 @@ import org.springframework.data.annotation.Transient;
 
 @Entity
 @Table(name = "user")
+@NamedQuery(name = "User.getFilePendingUser",query ="select u from User u where u.email not in(select f.owner from FileModel f)"
+)
 public class User {
 
 	@Id

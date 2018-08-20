@@ -9,5 +9,6 @@ public interface UserService {
 	public void saveUser(User user);
 	public List<User> findAll();
 	public void deleteUser(User user);
+	List<User> getFilePendingUser();
 	
 }

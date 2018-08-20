@@ -46,6 +46,8 @@ public class UserServiceImpl implements UserService{
 	public void deleteUser(User user) {
 		userRepository.delete(user);
 	}
-	
-
+	@Override
+	public List<User> getFilePendingUser(){
+		return userRepository.getFilePendingUser();
+	}
 }

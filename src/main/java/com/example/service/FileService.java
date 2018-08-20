@@ -10,4 +10,5 @@ public interface FileService {
 	public FileModel getFile(String name);
 	public List<FileModel> getFilesByOwner(String email);
 	List<FileModel> getFilebyOwnerName( String owner,String name);
+	public void deleteFile(Integer id);
 }

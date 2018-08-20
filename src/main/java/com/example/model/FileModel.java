@@ -16,7 +16,7 @@ public class FileModel {
 		@Id
 		@GeneratedValue
 	    @Column(name = "file_id")
-	    private Long id;
+	    private Integer id;
 		
 	    @Column(name = "file_name")
 		private String name;
@@ -38,11 +38,11 @@ public class FileModel {
 			this.lastmodified_date = sqlDate;
 		}
 
-		public Long getId() {
+		public Integer getId() {
 			return id;
 		}
 
-		public void setId(Long id) {
+		public void setId(Integer id) {
 			this.id = id;
 		}
 
@@ -73,7 +73,7 @@ public class FileModel {
 		public FileModel() {
 			
 		}
-		public FileModel(Long id, String name, String owner, String path) {
+		public FileModel(Integer id, String name, String owner, String path) {
 			super();
 			this.id = id;
 			this.name = name;

@@ -18,7 +18,8 @@
 	<h3 class="btn-warning">OBM Management</h3></div>
 	<div class="container">
 		<img th:src="@{/images/login.jpg}" class="img-responsive center-block" width="300" height="300" alt="Logo" />
-		<form th:action="@{/login}" method="POST" class="form-signin">
+	<form th:action="@{/login}" method="POST" class="form-signin" >
+		<!-- <form th:action="@{/validate}" method="POST" class="form-signin" th:object="${user}"  role="form"> -->
 			<h3 class="form-signin-heading" th:text="Welcome"></h3>
 			<br/>
 			 
@@ -30,7 +31,7 @@
 			<div align="center" th:if="${param.error}">
 				<p style="font-size: 20; color: #FF1C19;">Email or Password invalid, please verify</p>
 			</div>
-			<button class="btn btn-lg btn-primary btn-block" name="Submit" value="Login" type="Submit" th:text="Login"></button>
+			<button class="btn btn-lg btn-primary btn-block" type="Submit" th:text="Login"></button>
 			<div align="center"><a class="btn mini red-stripe" th:href="@{/registration}">Register</a></div>
 			<a href="/employee-login">employee-login</a>
 		</form>

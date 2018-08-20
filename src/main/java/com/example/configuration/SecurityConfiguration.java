@@ -57,7 +57,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.authenticated().and().csrf().disable().formLogin()
 				.loginPage("/login")
 				.failureUrl("/login?error=true")
-				.successForwardUrl("/admin-login")
+				.successForwardUrl("/admin-home")
+				//.successForwardUrl("/employee-login")
 				.usernameParameter("email")
 				.passwordParameter("password")
 				.and().logout()
@@ -82,9 +83,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			.logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
 			.logoutSuccessUrl("/").and().exceptionHandling()
 			.accessDeniedPage("/access-denied");*/
-	
 	}
-	
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
