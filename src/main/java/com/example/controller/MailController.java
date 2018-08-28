@@ -10,15 +10,20 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.service.MailService;
+
 @RestController
 public class MailController {
 	@Autowired
 	private JavaMailSender sender;
+	
+	@Autowired
+	private MailService mailService;
 
 	@RequestMapping("/sendto-all/[{eParams}]")
-	public String sendMailtoAll(@PathVariable("eParams") List<String> eParams) {
+	public String sendMailtoAllPendingUsers(@PathVariable("eParams") List<String> eParams) {
 		
-		MimeMessage message = sender.createMimeMessage();
+	/*	MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		try {
 			String[] to = eParams.toArray(new String[eParams.size()]);
@@ -29,14 +34,18 @@ public class MailController {
 			e.printStackTrace();
 			return "Error while sending mail ..";
 		}
-		sender.send(message);
-		return "Mail Sent Success!";
+		sender.send(message);*/
+		return mailService.sendMailtoAllPendingUsers(eParams);
 	}
 	
 	@RequestMapping("/send-mail/{email}")
 	public String sendMail(@PathVariable("email") String email) {
 		
-		MimeMessage message = sender.createMimeMessage();
+			return mailService.sendMail(email);
+		}
+		
+		
+		/*MimeMessage message = sender.createMimeMessage();
 		MimeMessageHelper helper = new MimeMessageHelper(message);
 		try {
  			helper.setTo(email);
@@ -48,5 +57,8 @@ public class MailController {
 		}
 		sender.send(message);
 		return "Mail Sent Success!";
-	}
+	}*/
+	
+		
+		
 }

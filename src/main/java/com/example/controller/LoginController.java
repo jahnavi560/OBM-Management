@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
@@ -21,17 +22,20 @@ import com.example.service.UserService;
 @Controller
 public class LoginController {
 	private static final Logger logger = LogManager.getLogger(LoginController.class);
+	
 	@Autowired
 	private UserService userService;
 	
-
 	@Autowired
 	private FileService fileService;
 
-
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-	public ModelAndView login(){
-		logger.info("login log");
+	public ModelAndView login() throws NumberFormatException, IOException{
+
+		logger.info("info log");
+		logger.debug("debug log");
+		logger.error("error log");
+		logger.trace("trace log");
 		System.out.println("login");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
@@ -110,7 +114,6 @@ public class LoginController {
 		List<FileModel> files = fileService.getAllFile(); 
 		List<User> lstuser = userService.getFilePendingUser();
 		List<String> list = new ArrayList<String>();
-		String[] tolist = new String[100];
 		for(User user : lstuser) {
 			list.add(user.getEmail());
 		}
