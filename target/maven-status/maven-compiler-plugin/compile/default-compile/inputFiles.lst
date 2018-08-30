@@ -1,7 +1,9 @@
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\UserServiceImpl.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\configuration\SecurityConfiguration.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\controller\FileController.java
+E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\MailService.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\model\User.java
+E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\MailServiceImpl.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\FileServiceImpl.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\repository\FileRepository.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\repository\UserRepository.java
@@ -12,7 +14,6 @@ E:\jj-Workspace\OBM-Management\src\main\java\com\example\configuration\WebMvcCon
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\controller\MailController.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\FileService.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\repository\RoleRepository.java
+E:\jj-Workspace\OBM-Management\src\main\java\com\example\job\ScheduledTasks.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\model\FileModel.java
 E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\UserService.java
-E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\QuartzService.java
-E:\jj-Workspace\OBM-Management\src\main\java\com\example\service\QuartzServiceImpl.java

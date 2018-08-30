@@ -3,10 +3,13 @@ package com.example.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Valid;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,10 +17,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.example.model.FileModel;
 import com.example.model.User;
 import com.example.service.FileService;
 import com.example.service.UserService;
+
 
 @Controller
 public class LoginController {
@@ -28,6 +33,9 @@ public class LoginController {
 	
 	@Autowired
 	private FileService fileService;
+	
+	@Value("${spring.mail.password}")
+	String password;
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public ModelAndView login() throws NumberFormatException, IOException{
@@ -39,6 +47,7 @@ public class LoginController {
 		System.out.println("login");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
+		System.out.println("value------"+password);
 		return modelAndView;
 	}
 	

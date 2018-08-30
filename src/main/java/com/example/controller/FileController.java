@@ -22,7 +22,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,23 +53,19 @@ public class FileController {
 			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 			String userName = auth.getName();
 			String filename = file.getOriginalFilename();
-			// List<FileModel> lstfile = fileService.getFilebyOwnerName(userName, filename);
 
 			byte[] bytes = file.getBytes();
-			Path path = Paths.get(UPLOADED_FOLDER + "" + file.getOriginalFilename());
+			Path path = Paths.get(UPLOADED_FOLDER + "" + filename);
 			System.out.println("----------" + path);
 			Files.write(path, bytes);
 			FileModel fileModel = new FileModel();
-			fileModel.setName(file.getOriginalFilename());
+			fileModel.setName(filename);
 			fileModel.setPath(path.toString());
 			fileModel.setOwner(userName);
 			java.util.Date d = new Date();
 			java.sql.Timestamp sqlDate = new java.sql.Timestamp(d.getTime());
 			fileModel.setLastmodified_date(sqlDate);
 			fileService.saveFile(fileModel);
-			// redirectAttributes.addFlashAttribute("fileName", path.toString());
-			// redirectAttributes.addFlashAttribute("message","You successfully uploaded '"
-			// + file.getOriginalFilename() + "'");
 			List<FileModel> files = fileService.getFilesByOwner(userName);
 			redirectAttributes.addFlashAttribute("files", files);
 		} catch (IOException e) {
@@ -124,10 +119,11 @@ public class FileController {
 		mv.addObject("files", files);
 		return mv;
 	}
+
 	@RequestMapping("/delete-file/{id}")
 	public String deleteFile(@PathVariable("id") Integer id) {
 		fileService.deleteFile(id);
-		return  "redirect:/employee-login";
+		return "redirect:/employee-login";
 	}
-	
+
 }
