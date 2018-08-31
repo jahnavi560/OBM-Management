@@ -3,9 +3,7 @@ package com.example.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.example.model.FileModel;
 import com.example.model.User;
 import com.example.service.FileService;
@@ -37,7 +34,7 @@ public class LoginController {
 	@Value("${spring.mail.password}")
 	String password;
 
-	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
+	@RequestMapping(value={"/", "/login","/logout"}, method = RequestMethod.GET)
 	public ModelAndView login() throws NumberFormatException, IOException{
 
 		logger.info("info log");
@@ -47,7 +44,6 @@ public class LoginController {
 		System.out.println("login");
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("login");
-		System.out.println("value------"+password);
 		return modelAndView;
 	}
 	
@@ -84,7 +80,6 @@ public class LoginController {
 			modelAndView.addObject("successMessage", "User has been registered successfully");
 			modelAndView.addObject("user", new User());
 			modelAndView.setViewName("registration");
-			
 		}
 		return modelAndView;
 	}
